@@ -23,7 +23,7 @@ namespace Bruck
 /-- Two functions share a value with multiplicities when the shifted functions
 are nontrivial and their local analytic orders agree everywhere. -/
 def SharesCM (f g : ℂ → ℂ) (a : ℂ) : Prop :=
-  f ≠ (fun _ => a) ∧ g ≠ (fun _ => a) ∧
+  f ≠ (fun _z => a) ∧ g ≠ (fun _z => a) ∧
     ∀ z, analyticOrderAt (fun w => f w - a) z = analyticOrderAt (fun w => g w - a) z
 
 /-- The limsup of the logarithmic growth exponent. -/

@@ -1,18 +1,37 @@
 module
 
 public import Mathlib.Analysis.Analytic.Order
-public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.Complex.ValueDistribution.CharacteristicFunction
+public import Mathlib.Order.LiminfLimsup
 
-/-! # Sharing an entire-function value with multiplicity -/
+/-!
+# Brück's conjecture
+
+The characteristic is the Nevanlinna characteristic at infinity.
+For an entire function it is the circle average of the positive logarithm
+of the norm. Positive integer hyper-orders and infinite hyper-order are excluded.
+-/
 
 @[expose] public section
 
+open Filter
+open scoped ENNReal
+
 namespace Bruck
 
-/-- Neither function is identically `a`, and their differences from `a` have equal
-analytic orders at every point. -/
+/-- Two functions share a value with multiplicities when the shifted functions
+are nontrivial and their local analytic orders agree everywhere. -/
 def SharesCM (f g : ℂ → ℂ) (a : ℂ) : Prop :=
-  f ≠ (fun _ => a) ∧ g ≠ (fun _ => a) ∧
+  f ≠ (fun _z => a) ∧ g ≠ (fun _z => a) ∧
     ∀ z, analyticOrderAt (fun w => f w - a) z = analyticOrderAt (fun w => g w - a) z
+
+/-- The limsup of the logarithmic growth exponent. -/
+noncomputable def logOrder (F : ℝ → ℝ) : ℝ≥0∞ :=
+  limsup (fun r => ENNReal.ofReal (Real.log (F r) / Real.log r)) atTop
+
+/-- The limsup of the double logarithm of the characteristic divided by `log r`. -/
+noncomputable def hyperOrder (f : ℂ → ℂ) : ℝ≥0∞ :=
+  logOrder (fun r => Real.log (ValueDistribution.characteristic f ⊤ r))
 
 end Bruck

@@ -1,33 +1,17 @@
 module
 
-public import Mathlib.Analysis.Complex.ValueDistribution.CharacteristicFunction
+public import Bruck.Definitions
 public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-public import Mathlib.Order.LiminfLimsup
 public import Mathlib.Tactic.Linarith
 
-/-!
-# Hyper-order
+/-! # Growth comparisons for logarithmic order -/
 
-The characteristic at infinity agrees with the mean of the positive
-logarithm of the norm for entire functions.
--/
-
-@[expose] public section
+public section
 
 open Filter
 open scoped ENNReal
 
 namespace Bruck
-
-/-- The limsup of the logarithmic exponent of an eventually positive function.
-The codomain is the extended nonnegative reals. -/
-noncomputable def logOrder (F : ℝ → ℝ) : ℝ≥0∞ :=
-  limsup (fun r => ENNReal.ofReal (Real.log (F r) / Real.log r)) atTop
-
-/-- Hyper-order, given by the limsup of `log (log T(r,f)) / log r`.
-The logarithms have positive arguments eventually for nonconstant entire functions. -/
-noncomputable def hyperOrder (f : ℂ → ℂ) : ℝ≥0∞ :=
-  logOrder (fun r => Real.log (ValueDistribution.characteristic f ⊤ r))
 
 theorem logOrder_le_of_eventually_rpow {F : ℝ → ℝ} {s : ℝ}
     (hpos : ∀ᶠ r in atTop, 0 < F r) (h : ∀ᶠ r in atTop, F r ≤ r ^ s) :
