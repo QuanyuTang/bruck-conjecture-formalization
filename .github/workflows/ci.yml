@@ -1,0 +1,100 @@
+name: Lean and Palomar verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  metadata:
+    name: Metadata and license
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b
+        with:
+          ruby-version: "3.3.12"
+          bundler-cache: true
+      - name: Check metadata
+        run: ruby scripts/validate-formalization.rb
+      - name: Check the root license
+        shell: bash
+        run: |
+          bundle exec licensee detect LICENSE --json --no-packages --no-readme > "$RUNNER_TEMP/license.json"
+          ruby -rjson -e '
+            licenses = JSON.parse(File.read(ARGV.fetch(0))).fetch("licenses").map { |x| x.fetch("spdx_id") }
+            abort "Expected exactly Apache-2.0" unless licenses == ["Apache-2.0"]
+          ' "$RUNNER_TEMP/license.json"
+
+  verify:
+    name: Lean build, axiom audit, and Comparator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check Lean source requirements
+        run: python3 scripts/check-lean-sources.py
+      - name: Free unused runner SDK space
+        shell: bash
+        run: |
+          set -euo pipefail
+          df -h -- "$GITHUB_WORKSPACE" "$RUNNER_TEMP" "${TMPDIR:-/tmp}"
+          # These preinstalled SDKs are unused by the pinned Lean toolchain.
+          for sdk in /usr/local/lib/android /usr/share/dotnet /usr/local/.ghcup /usr/share/swift /opt/az; do
+            [[ -d "$sdk" && ! -L "$sdk" ]] || continue
+            [[ "$(realpath -e -- "$sdk")" == "$sdk" ]] || continue
+            sudo rm -rf --one-file-system -- "$sdk"
+          done
+          df -h -- "$GITHUB_WORKSPACE" "$RUNNER_TEMP" "${TMPDIR:-/tmp}"
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "false"
+          use-github-cache: "false"
+      - name: Build the pinned project and audit the theorem
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ci-output
+          lake exe cache get
+          lake build 2>&1 | tee .ci-output/build.log
+          lake env lean -j1 verification/Audit.lean 2>&1 | tee .ci-output/axioms.log
+      - name: Install bubblewrap for the Comparator sandbox
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - name: Run Comparator and the independent kernels
+        shell: bash
+        run: |
+          set -o pipefail
+          df -h -- "$GITHUB_WORKSPACE" "$RUNNER_TEMP" "${TMPDIR:-/tmp}"
+          bash scripts/verify-comparator.sh 2>&1 | tee .ci-output/comparator.log
+      - name: Check that the build preserved the pinned source
+        run: git diff --exit-code
+      - name: Upload verification logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: verification-${{ github.sha }}
+          path: .ci-output/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

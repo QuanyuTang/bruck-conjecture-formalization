@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Brück's conjecture"
+  description: >-
+    Let f be a nonconstant entire function of finite hyper-order outside the
+    positive integers. If f and its derivative share a finite complex value a
+    counting multiplicities, then f' - a = c(f - a) on the complex plane for a
+    nonzero complex constant c.
+  authors: ["Yixin He", "Tao Hu", "Quanyu Tang"]
+  license: "Apache-2.0"
+  responsible_maintainers: ["Quanyu Tang"]
+
+classification:
+  arxiv: ["math.CV"]
+  msc2020: ["30D35", "30D15", "34M10"]
+
+sources:
+  - title: "Value Sharing and a First-Order Complex Differential Equation"
+    authors: ["Yixin He", "Tao Hu", "Quanyu Tang"]
+    type: "paper"
+    location: "Theorem titled Value sharing with the first derivative"
+    relationship: "formalizes"
+    note: "Unpublished mathematical manuscript giving the informal proof."
+  - title: "On Entire Functions which Share One Value CM with their First Derivative"
+    authors: ["Rainer Brück"]
+    id: "https://doi.org/10.1007/BF03322176"
+    type: "paper"
+    relationship: "background"
+    note: "Original formulation of the conjecture and proof of the zero shared-value case."
+  - title: "The Size of Wiman–Valiron Disks"
+    authors: ["Walter Bergweiler"]
+    id: "https://arxiv.org/abs/0901.2690v1"
+    type: "paper"
+    location: "Theorem 1.1 and Remark 1"
+    relationship: "background"
+    note: "Maximum-modulus approximation and exceptional-set slope estimates."
+  - title: "On the modulus of solutions of a first order differential equation"
+    authors: ["Yueyang Zhang"]
+    id: "https://arxiv.org/abs/2407.00580"
+    type: "paper"
+    relationship: "background"
+    note: "Growth of solutions for polynomial exponents and its relation to Brück's conjecture."
+
+related_formalizations:
+  - id: "https://github.com/QuanyuTang/three-im-one-cm-formalization/tree/be1db0490fb346c70ddccb835b16636c18395476"
+    relationship: "adapts"
+    note: "The earlier formalization supplies reusable Wiman–Valiron and characteristic estimates."
+
+status:
+  scope: >-
+    This repository contains the substantive Lean proof of the main theorem
+    with the usual Nevanlinna hyper-order, analytic zero multiplicities, and
+    finite hyper-order outside the positive integers, as in the original
+    conjecture. The solution includes the
+    growth argument for the entire exponential coefficient in the associated
+    first-order complex differential equation.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+  main_results:
+    - declaration: "Bruck.bruck_conjecture"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+
+automation:
+  methods:
+    - method: "agent"
+      framework: "Codex"
+      tool_setup: >-
+        Codex developed the Lean formalization from the manuscript's informal
+        proof, with Lean and Mathlib used for proof development and checking.
+
+fidelity:
+  divergences: >-
+    The formalization uses Mathlib's Nevanlinna characteristic at infinity,
+    which agrees with the circular average of the positive logarithm of the
+    norm for entire functions. The radial upper bound uses Grönwall's
+    inequality on a segment, and the quotient argument uses Mathlib's
+    meromorphic normal form.
+
+review:
+  status: "agent-reviewed"
+  notes: >-
+    An independent agent compared the hypotheses, quantifiers, conclusion,
+    and statement definitions with the manuscript. The repository includes
+    a pinned Lean build, a transitive axiom audit, and independent Challenge
+    and Solution modules for CI with Comparator.
+
+alignment:
+  namespace: "Bruck"
+  statements:
+    - source: "Value sharing with the first derivative"
+      lean: "Bruck.bruck_conjecture"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        The Challenge and Solution state the same complex-plane equality, with
+        the nonzero constant chosen independently of the point.
+
+acknowledgements: >-
+  Lean, Mathlib, and Codex. Some complex-analysis lemmas were adapted from
+  QuanyuTang/three-im-one-cm-formalization under Apache-2.0.
