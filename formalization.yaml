@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/99c678e569c7c4c0772db297c5ddd5e4c9b6322e/schema/v0.4.schema.json
 version: "v0.4"
 
 project:
@@ -29,6 +29,13 @@ sources:
     type: "paper"
     relationship: "background"
     note: "Original formulation of the conjecture and proof of the zero shared-value case."
+  - title: "Complex Analysis: An Introduction to the Theory of Analytic Functions of One Complex Variable"
+    authors: ["Lars V. Ahlfors"]
+    id: "ISBN 0-07-000657-1"
+    type: "book"
+    location: "3rd ed. (1979), Chapter 4, §§2.2–2.3, pp. 119–120, and Chapter 5, §1.2, p. 179"
+    relationship: "background"
+    note: "Cauchy's formula and Taylor expansion in the manuscript. The Lean proof uses the corresponding results in Mathlib."
   - title: "The Size of Wiman–Valiron Disks"
     authors: ["Walter Bergweiler"]
     id: "https://arxiv.org/abs/0901.2690v1"
@@ -86,10 +93,12 @@ fidelity:
 review:
   status: "agent-reviewed"
   notes: >-
-    An independent agent compared the hypotheses, quantifiers, conclusion,
-    and statement definitions with the manuscript. The repository includes
-    a pinned Lean build, a transitive axiom audit, and independent Challenge
-    and Solution modules for CI with Comparator.
+    Agents compared the hypotheses and conclusion with the manuscript and with
+    Conjecture 1.4 in Tingbin Cao's On the Brück conjecture. The Lean file
+    Bruck/StatementChecks.lean proves the correspondence with Taylor
+    multiplicities and the classical circle-mean formula for hyper-order.
+    CI audits the transitive axioms and compares the independent Challenge
+    with the Solution using the pinned toolchain.
 
 alignment:
   namespace: "Bruck"

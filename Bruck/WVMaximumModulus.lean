@@ -9,8 +9,9 @@ public import Mathlib.Analysis.Convex.Deriv
 /-!
 # Maximum modulus and its logarithmic convexity
 
-Pure foundations for a maximum-modulus version of the local Wiman--Valiron
-argument. This module does not import the unproved central-index theorem.
+Hadamard's three-lines theorem gives the convexity of
+`x ↦ log M(exp x)` for every entire function that is not identically zero.
+The local Wiman–Valiron estimates use this convexity.
 -/
 
 @[expose] public section

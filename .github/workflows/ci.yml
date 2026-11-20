@@ -28,6 +28,20 @@ jobs:
           bundler-cache: true
       - name: Check metadata
         run: ruby scripts/validate-formalization.rb
+      - name: Validate formalization.yaml against the upstream v0.4 schema
+        shell: bash
+        working-directory: ${{ runner.temp }}
+        env:
+          SCHEMA_REVISION: 99c678e569c7c4c0772db297c5ddd5e4c9b6322e
+          VALIDATOR_RELEASE: https://github.com/sourcemeta/jsonschema/releases/download/v17.3.3
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o v0.4.schema.json \
+            "https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/$SCHEMA_REVISION/schema/v0.4.schema.json"
+          curl -fsSL --retry 3 -o validator.zip "$VALIDATOR_RELEASE/jsonschema-17.3.3-linux-x86_64.zip"
+          echo "2b2f91d5b429ee8f440d11c0413a24d6acc1406d209989fb618e39f4ff1157ed  validator.zip" | sha256sum --check
+          unzip -qj validator.zip '*/bin/jsonschema'
+          ./jsonschema validate v0.4.schema.json "$GITHUB_WORKSPACE/formalization.yaml" --verbose
       - name: Check the root license
         shell: bash
         run: |
