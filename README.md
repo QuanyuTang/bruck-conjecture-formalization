@@ -1,6 +1,6 @@
 # Brück's conjecture in Lean 4
 
-**Provisional authors:** Yixin He, Tao Hu, Quanyu Tang
+**Formalization authors:** Pengcheng Fang, Tao Hu, Yanyang Li, Quanyu Tang, Haiqi Zhang
 
 The theorem proves that if a nonconstant entire function $f$ of finite
 hyper-order different from every positive integer shares $a \in \mathbb C$

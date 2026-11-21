@@ -8,7 +8,7 @@ project:
     positive integers. If f and its derivative share a finite complex value a
     counting multiplicities, then f' - a = c(f - a) on the complex plane for a
     nonzero complex constant c.
-  authors: ["Yixin He", "Tao Hu", "Quanyu Tang"]
+  authors: ["Pengcheng Fang", "Tao Hu", "Yanyang Li", "Quanyu Tang", "Haiqi Zhang"]
   license: "Apache-2.0"
   responsible_maintainers: ["Quanyu Tang"]
 
