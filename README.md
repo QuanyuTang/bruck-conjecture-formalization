@@ -2,6 +2,9 @@
 
 **Formalization authors:** Pengcheng Fang, Tao Hu, Yanyang Li, Quanyu Tang, Haiqi Zhang
 
+This repository formalizes Theorem 1.1 of *The Brück conjecture and the growth
+of entire solutions of a differential equation*.
+
 The theorem proves that if a nonconstant entire function $f$ of finite
 hyper-order different from every positive integer shares $a \in \mathbb C$
 with its first derivative counting multiplicities, then there is a nonzero
@@ -9,10 +12,10 @@ constant $c \in \mathbb C$ such that
 $f'(z)-a=c(f(z)-a)$ for every $z \in \mathbb C$. It includes $a=0$ and
 all nonzero shared values. [Brück (1996)](https://doi.org/10.1007/BF03322176)
 
-Codex produced the Lean formalization from the original informal proof in
-*Value Sharing and a First-Order Complex Differential Equation*. The proof
-uses equality of local analytic orders, an entire logarithm of the sharing
-quotient, and the comparison between the Nevanlinna characteristic and
+Codex produced the Lean formalization from the analytic proof in the working
+draft titled *Value Sharing and a First-Order Complex Differential Equation*.
+The proof uses equality of local analytic orders, an entire logarithm of the
+sharing quotient, and the comparison between the Nevanlinna characteristic and
 maximum modulus. For a nonzero shared value, the manuscript's contour
 estimate and a radial upper bound control the growth of solutions to
 $y'=e^h y+1$. A specialization of the maximum-modulus approximation is
@@ -48,11 +51,12 @@ The hypotheses therefore force $h$ to be constant.
 
 ## Verification
 
-Palomar compares the independent theorem in [Challenge.lean](Challenge.lean)
-with the proof exported by [Solution.lean](Solution.lean). The Challenge
-contains one intentional `sorry`. The build audits the public theorem and
-the two definition comparisons for transitive axioms. The allowed axioms are
+GitHub Actions uses the Palomar-compatible Comparator to compare the
+independent challenge statement with the solution. The challenge contains
+one intentional `sorry`. The build audits the public theorem and the two
+definition comparisons for transitive axioms. The allowed axioms are
 `propext`, `Classical.choice`, and `Quot.sound`.
+[Challenge.lean](Challenge.lean) · [Solution.lean](Solution.lean)
 
 ```sh
 lake exe cache get

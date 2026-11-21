@@ -17,12 +17,12 @@ classification:
   msc2020: ["30D35", "30D15", "34M10"]
 
 sources:
-  - title: "Value Sharing and a First-Order Complex Differential Equation"
-    authors: ["Yixin He", "Tao Hu", "Quanyu Tang"]
+  - title: "The Brück conjecture and the growth of entire solutions of a differential equation"
+    authors: ["Pengcheng Fang", "Tao Hu", "Yanyang Li", "Quanyu Tang", "Haiqi Zhang"]
     type: "paper"
-    location: "Theorem titled Value sharing with the first derivative"
+    location: "Theorem 1.1 (value sharing with the first derivative)"
     relationship: "formalizes"
-    note: "Unpublished mathematical manuscript giving the informal proof."
+    note: "Manuscript presenting the analytic proof of the formalized theorem."
   - title: "On Entire Functions which Share One Value CM with their First Derivative"
     authors: ["Rainer Brück"]
     id: "https://doi.org/10.1007/BF03322176"
@@ -79,8 +79,10 @@ automation:
     - method: "agent"
       framework: "Codex"
       tool_setup: >-
-        Codex developed the Lean formalization from the manuscript's informal
-        proof, with Lean and Mathlib used for proof development and checking.
+        Codex developed the Lean formalization from the analytic proof in
+        the working draft titled "Value Sharing and a First-Order Complex
+        Differential Equation", using Lean and Mathlib for proof development
+        and checking.
 
 fidelity:
   divergences: >-
@@ -93,8 +95,8 @@ fidelity:
 review:
   status: "agent-reviewed"
   notes: >-
-    Agents compared the hypotheses and conclusion with the manuscript and with
-    Conjecture 1.4 in Tingbin Cao's On the Brück conjecture. The Lean file
+    Agents compared the hypotheses and conclusion with the working draft and
+    with Conjecture 1.4 in Tingbin Cao's On the Brück conjecture. The Lean file
     Bruck/StatementChecks.lean proves the correspondence with Taylor
     multiplicities and the classical circle-mean formula for hyper-order.
     CI audits the transitive axioms and compares the independent Challenge
@@ -103,7 +105,7 @@ review:
 alignment:
   namespace: "Bruck"
   statements:
-    - source: "Value sharing with the first derivative"
+    - source: "Theorem 1.1 (value sharing with the first derivative)"
       lean: "Bruck.bruck_conjecture"
       module: "Solution"
       status: "proved"
