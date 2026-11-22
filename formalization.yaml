@@ -19,10 +19,12 @@ classification:
 sources:
   - title: "The Brück conjecture and the growth of entire solutions of a differential equation"
     authors: ["Pengcheng Fang", "Tao Hu", "Yanyang Li", "Quanyu Tang", "Haiqi Zhang"]
+    id: "https://hexagonmath.org/2611.00826v1"
     type: "paper"
     location: "Theorem 1.1 (value sharing with the first derivative)"
     relationship: "formalizes"
-    note: "Manuscript presenting the analytic proof of the formalized theorem."
+    note: "Hexagon preprint, version 1, posted 2026-11-21."
+    license: "CC-BY-4.0"
   - title: "On Entire Functions which Share One Value CM with their First Derivative"
     authors: ["Rainer Brück"]
     id: "https://doi.org/10.1007/BF03322176"

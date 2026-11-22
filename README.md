@@ -4,6 +4,12 @@
 
 This repository formalizes Theorem 1.1 of *The Brück conjecture and the growth
 of entire solutions of a differential equation*.
+[Hexagon preprint, version 1](https://hexagonmath.org/2611.00826v1)
+
+The Palomar Registry entry records verification of `Bruck.bruck_conjecture` at
+commit `00f7163`.
+[PALOMAR-2026-11-21-000020 v1](https://palomar-registry.org/entry?id=PALOMAR-2026-11-21-000020&version=1) ·
+[Registered GitHub snapshot](https://github.com/QuanyuTang/bruck-conjecture-formalization/tree/00f71637fc70ed8d12f51d79f6ff2f211592d6b4)
 
 The theorem proves that if a nonconstant entire function $f$ of finite
 hyper-order different from every positive integer shares $a \in \mathbb C$
